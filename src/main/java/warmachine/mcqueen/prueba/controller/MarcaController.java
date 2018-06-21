@@ -34,73 +34,32 @@ public class MarcaController {
     
     @GetMapping()
     public Iterable<MarcaModel> list() {
-        return marcaRepository.findAll();
+        
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<MarcaModel> get(@PathVariable String id) {
-        Optional<MarcaModel> mOptional = marcaRepository.findById(Integer.parseInt(id));
-        if(mOptional.isPresent()){
-            MarcaModel mEncontrado = mOptional.get();
-            
-            return new ResponseEntity<>(mEncontrado, HttpStatus.FOUND);
-            
-        }else{
-            
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            
-        }
+        return null;
+  
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<MarcaModel> put(@PathVariable String id, @RequestBody MarcaModel marcaEditar) {
-        
-        Optional<MarcaModel> mOptional = marcaRepository.findById(Integer.parseInt(id));
-        if(mOptional.isPresent()){
-            MarcaModel mEncontrado = mOptional.get();
-            marcaEditar.setIdMarca(mEncontrado.getIdMarca());
-            marcaRepository.save(marcaEditar);
-            return new ResponseEntity<>(marcaEditar, HttpStatus.OK);
-            
-        }else{
-            
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            
-        }
+        return null;
+   
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody MarcaModel nuevaMarca) {
-        
-        nuevaMarca = marcaRepository.save(nuevaMarca);
-        
-        Optional<MarcaModel> mOptional = marcaRepository.findById(nuevaMarca.getIdMarca());
-        if(mOptional.isPresent()){
-            MarcaModel mEncontrado = mOptional.get();
-            
-            return new ResponseEntity<>(mEncontrado, HttpStatus.CREATED);
-            
-        }else{
-            
-            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-            
-        }
+        return null;
+
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
+        return null;
         
-        Optional<MarcaModel> mOptional = marcaRepository.findById(Integer.parseInt(id));
-        if(mOptional.isPresent()){
-            MarcaModel mEncontrado = mOptional.get();
-            marcaRepository.deleteById(mEncontrado.getIdMarca());
-            return new ResponseEntity<>(mEncontrado, HttpStatus.OK);
-            
-        }else{
-            
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            
-        }
+
     }
     
 }

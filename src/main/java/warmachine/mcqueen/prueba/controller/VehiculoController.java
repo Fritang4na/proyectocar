@@ -30,56 +30,32 @@ public class VehiculoController {
     
     @GetMapping()
     public List<VehiculoModel> list() {
-        return VehiculoModel.vehiculos;
+        return null;
+        
     }
     
     @GetMapping("/{id}")
     public VehiculoModel get(@PathVariable String id) {
-        VehiculoModel vehiculo = new VehiculoModel();
-        
-        return vehiculo.buscaVehiculo(Integer.parseInt(id));
+        return null;
+    
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<VehiculoModel> put(@PathVariable String id, @RequestBody VehiculoModel vehiculoEditar) {
-        VehiculoModel vehiculo = new VehiculoModel();
-        
-        
-        
-        return new ResponseEntity<>(vehiculo.editarVehiculo(Integer.parseInt(id), vehiculoEditar), HttpStatus.OK);
+        return null;
+   
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody VehiculoModel nuevoVehiculo) {
-        VehiculoModel vehiculo = new VehiculoModel();
-        
-        TipoVehiculoModel t = new TipoVehiculoModel();
-        
-        nuevoVehiculo.setTipoVehiculo(t.buscaTipoV(nuevoVehiculo.getTipoVehiculo().getIdTipoVehiculo()));
-        
-        VersionModel v = new VersionModel();
-        
-        nuevoVehiculo.setVersion(v.buscaVersion(nuevoVehiculo.getVersion().getIdVersion()));
-        
-        if (vehiculo.nuevoVehiculo(nuevoVehiculo)) {
-            
-            return new ResponseEntity<>(HttpStatus.CREATED);
-            
-        }else{
-            
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
+        return null;
+    
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        VehiculoModel vehiculo = new VehiculoModel();
-        
-        if (vehiculo.eliminarVehiculo(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        return null;
+   
     }
     
 }

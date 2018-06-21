@@ -29,53 +29,32 @@ public class ModeloController {
     
     @GetMapping()
     public List<ModeloModel> list() {
-        return ModeloModel.modelos;
+        return null;
+        
     }
     
     @GetMapping("/{id}")
     public ModeloModel get(@PathVariable String id) {
-        ModeloModel modelo = new ModeloModel();
-        
-        return modelo.buscaModelo(Integer.parseInt(id));
+        return null;
+     
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<ModeloModel> put(@PathVariable String id, @RequestBody ModeloModel modeloEditar) {
-        ModeloModel modelo = new ModeloModel();
-        
-        
-        
-        return new ResponseEntity<>(modelo.editarModelo(Integer.parseInt(id), modeloEditar), HttpStatus.OK);
+        return null;
+  
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody ModeloModel nuevoModelo) {
-        ModeloModel modelo = new ModeloModel();
-        
-        MarcaModel m = new MarcaModel();
-        
-        nuevoModelo.setMarca(m.buscaMarca(nuevoModelo.getMarca().getIdMarca()));
-        
-        
-        if (modelo.nuevoModelo(nuevoModelo)) {
-            
-            return new ResponseEntity<>(HttpStatus.CREATED);
-            
-        }else{
-            
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
+        return null;
+    
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        ModeloModel modelo = new ModeloModel();
-        
-        if (modelo.eliminarModelo(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        return null;
+   
     }
     
 }

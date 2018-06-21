@@ -30,56 +30,31 @@ public class PersonaController {
     
     @GetMapping()
     public List<PersonaModel> list() {
-        return PersonaModel.personas;
+        return null;
+      
     }
     
     @GetMapping("/{id}")
     public PersonaModel get(@PathVariable String id) {
-        PersonaModel persona = new PersonaModel();
-        
-        return persona.buscaPersona(Integer.parseInt(id));
+        return null;
+      
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<PersonaModel> put(@PathVariable String id, @RequestBody PersonaModel personaEditar) {
-        PersonaModel persona = new PersonaModel();
-        
-        
-        
-        return new ResponseEntity<>(persona.editarPersona(Integer.parseInt(id), personaEditar), HttpStatus.OK);
+        return null;
+ 
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody PersonaModel nuevaPersona) {
-        PersonaModel persona = new PersonaModel();
-        
-        CiudadModel c = new CiudadModel();
-        
-        nuevaPersona.setCiudad(c.buscaCiudad(nuevaPersona.getCiudad().getIdCiudad()));
-        
-        TipoPersonaModel t = new TipoPersonaModel();
-        
-        nuevaPersona.setTipoPersona(t.buscaTipoP(nuevaPersona.getTipoPersona().getIdTipoPersona()));
-        
-        if (persona.nuevaPersona(nuevaPersona)) {
-            
-            return new ResponseEntity<>(HttpStatus.CREATED);
-            
-        }else{
-            
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
+        return null;
+   
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        PersonaModel persona = new PersonaModel();
-        
-        if (persona.eliminarPersona(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
-    }
-    
+        return null;
+
+}
 }

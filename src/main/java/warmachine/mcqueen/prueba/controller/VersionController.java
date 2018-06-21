@@ -33,46 +33,33 @@ public class VersionController {
     
     @GetMapping()
     public List<VersionModel> list() {
-        return VersionModel.versiones;
+        return null;
+        
     }
     
     @GetMapping("/{id}")
     public VersionModel get(@PathVariable String id) {
-        VersionModel version = new VersionModel();
-        
-        return version.buscaVersion(Integer.parseInt(id));
+        return null;
+
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<VersionModel> put(@PathVariable String id, @RequestBody VersionModel versionEditar) {
-       VersionModel version = new VersionModel();
-        
-        
-        
-        return new ResponseEntity<>(version.editarVersion(Integer.parseInt(id), versionEditar), HttpStatus.OK);
+        return null;
+
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody VersionModel nuevaVersion) {
-        VersionModel version = new VersionModel();
+        
+        return null;
         
         
-        wer
-          
-       wer   
-        
-        sdf
-    sdf
-        
+                }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        VersionModel version = new VersionModel();
-        
-        if (version.eliminarVersion(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        return null;
+
     }
     
 }
