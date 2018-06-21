@@ -56,36 +56,14 @@ public class VersionController {
     public ResponseEntity<?> post(@RequestBody VersionModel nuevaVersion) {
         VersionModel version = new VersionModel();
         
-        CombustibleModel c = new CombustibleModel();
         
-        nuevaVersion.setCombustible(c.buscaCombustible(nuevaVersion.getCombustible().getIdCombustible()));
         
-        CarroceriaModel ca = new CarroceriaModel();
         
-        nuevaVersion.setCarroceria(ca.buscaCarroceria(nuevaVersion.getCarroceria().getIdCarroceria()));
+        dfdfsdf
         
-        TransmisionModel t = new TransmisionModel();
         
-        nuevaVersion.setTransmision(t.buscaTransmision(nuevaVersion.getTransmision().getIdTransmision()));
+    sdf
         
-        TraccionModel tr = new TraccionModel();
-        
-        nuevaVersion.setTraccion(tr.buscaTraccion(nuevaVersion.getTraccion().getIdTraccion()));
-        
-        ModeloModel m = new ModeloModel();
-        
-        nuevaVersion.setModelo(m.buscaModelo(nuevaVersion.getModelo().getIdModelo()));
-        
-        if (version.nuevaVersion(nuevaVersion)) {
-            
-            return new ResponseEntity<>(HttpStatus.CREATED);
-            
-        }else{
-            
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-    
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
         VersionModel version = new VersionModel();
