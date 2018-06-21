@@ -1,15 +1,20 @@
 
 package warmachine.mcqueen.prueba.model;
 
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="tipo_vehiculo")
 public class TipoVehiculoModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTipoVehiculo;
     private String nombreTipoVehiculo;
     private String detalle;
-    
-    public static ArrayList<TipoVehiculoModel> tiposv = new ArrayList<>();
 
     public int getIdTipoVehiculo() {
         return idTipoVehiculo;
@@ -47,79 +52,6 @@ public class TipoVehiculoModel {
         this.idTipoVehiculo = idTipoVehiculo;
         this.nombreTipoVehiculo = nombreTipoVehiculo;
         this.detalle = detalle;
-    }
-    
-    public boolean nuevoTipoV(TipoVehiculoModel nuevoTipoV){
-    
-        int id = 0;
-        
-        if (!tiposv.isEmpty()) {
-            
-            for (TipoVehiculoModel tipo : tiposv) {
-                if (tipo.getIdTipoVehiculo()> id) {
-                    id = tipo.getIdTipoVehiculo();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-        tiposv.add(new TipoVehiculoModel(id, nuevoTipoV.getNombreTipoVehiculo(), nuevoTipoV.getDetalle()));
-         
-        return true;
-    }
-    
-    public TipoVehiculoModel buscaTipoV(int idTipoVBuscado){
-    
-        TipoVehiculoModel tipoVEncontrado = null;
-        
-        if(!tiposv.isEmpty()){
-            for (TipoVehiculoModel tipo : tiposv) {
-                if (tipo.getIdTipoVehiculo()== idTipoVBuscado) {
-                    tipoVEncontrado = tipo;
-                }
-            }
-        }
-        
-        return tipoVEncontrado;
-        
-    }
-    
-    public TipoVehiculoModel editarTipoV(int idTipoV, TipoVehiculoModel tipoVEditar){
-    
-        TipoVehiculoModel tipoVEditado = null;
-        
-        if(!tiposv.isEmpty()){
-            for (TipoVehiculoModel tipo : tiposv) {
-                if (tipo.getIdTipoVehiculo()== idTipoV) {
-                    tipo.setNombreTipoVehiculo(tipoVEditar.getNombreTipoVehiculo());
-                    tipo.setDetalle(tipoVEditar.getDetalle());
-                    
-                    tipoVEditado = tipo;
-                }
-            }
-        }
-        
-        return tipoVEditado;
-        
-    }
-    
-    public boolean eliminarTipoV(int id){
-        TipoVehiculoModel tipoVEliminado = null;
-        
-        if(!tiposv.isEmpty()){
-            for (TipoVehiculoModel tipo : tiposv) {
-                if (tipo.getIdTipoVehiculo()== id) {
-                   tipoVEliminado = tipo;
-                }
-            }
-        }
-        
-        tiposv.remove(tipoVEliminado);
-        
-        
-        return true;
     }
     
 }

@@ -8,6 +8,8 @@ package warmachine.mcqueen.prueba.controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import warmachine.mcqueen.prueba.model.TraccionModel;
+import warmachine.mcqueen.prueba.repository.TraccionRepository;
 
 /**
  *
@@ -26,49 +29,77 @@ import warmachine.mcqueen.prueba.model.TraccionModel;
 @RequestMapping("/traccion")
 public class TraccionController {
     
+    @Autowired
+    private TraccionRepository traccionRepository;
+    
     @GetMapping()
-    public List<TraccionModel> list() {
-        return TraccionModel.tracciones;
+    public Iterable<TraccionModel> list() {
+        return traccionRepository.findAll();
     }
     
     @GetMapping("/{id}")
-    public TraccionModel get(@PathVariable String id) {
-        TraccionModel traccion = new TraccionModel();
-        
-        return traccion.buscaTraccion(Integer.parseInt(id));
+    public ResponseEntity<TraccionModel> get(@PathVariable String id) {
+        Optional<TraccionModel> traOptional = traccionRepository.findById(Integer.parseInt(id));
+        if(traOptional.isPresent()){
+            TraccionModel traEncontrado = traOptional.get();
+            
+            return new ResponseEntity<>(traEncontrado, HttpStatus.FOUND);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<TraccionModel> put(@PathVariable String id, @RequestBody TraccionModel traccionEditar) {
-        TraccionModel traccion = new TraccionModel();
         
-        
-        
-        return new ResponseEntity<>(traccion.editarTraccion(Integer.parseInt(id), traccionEditar), HttpStatus.OK);
+        Optional<TraccionModel> traOptional = traccionRepository.findById(Integer.parseInt(id));
+        if(traOptional.isPresent()){
+            TraccionModel traEncontrado = traOptional.get();
+            traccionEditar.setIdTraccion(traEncontrado.getIdTraccion());
+            traccionRepository.save(traccionEditar);
+            return new ResponseEntity<>(traccionEditar, HttpStatus.OK);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody TraccionModel nuevaTraccion) {
-        TraccionModel traccion = new TraccionModel();
         
-        if (traccion.nuevaTraccion(nuevaTraccion)) {
+        nuevaTraccion = traccionRepository.save(nuevaTraccion);
+        
+        Optional<TraccionModel >traOptional = traccionRepository.findById(nuevaTraccion.getIdTraccion());
+        if(traOptional.isPresent()){
+            TraccionModel traEncontrado = traOptional.get();
             
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(traEncontrado, HttpStatus.CREATED);
             
         }else{
             
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+            
         }
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        TraccionModel traccion = new TraccionModel();
         
-        if (traccion.eliminarTraccion(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Optional<TraccionModel> traOptional = traccionRepository.findById(Integer.parseInt(id));
+        if(traOptional.isPresent()){
+            TraccionModel traEncontrado = traOptional.get();
+            traccionRepository.deleteById(traEncontrado.getIdTraccion());
+            return new ResponseEntity<>(traEncontrado, HttpStatus.OK);
+            
         }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
         }
     }
     

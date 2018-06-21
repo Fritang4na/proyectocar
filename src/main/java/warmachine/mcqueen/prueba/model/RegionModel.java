@@ -1,15 +1,20 @@
 
 package warmachine.mcqueen.prueba.model;
 
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="region")
 public class RegionModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idRegion;
     private String nombreRegion;
     private String detalle;
-    
-    public static ArrayList<RegionModel> regiones = new ArrayList<>();
     
     public int getIdRegion() {
         return idRegion;
@@ -47,79 +52,6 @@ public class RegionModel {
         this.idRegion = idRegion;
         this.nombreRegion = nombreRegion;
         this.detalle = detalle;
-    }
-    
-    public boolean nuevaRegion(RegionModel nuevaRegion){
-    
-        int id = 0;
-        
-        if (!regiones.isEmpty()) {
-            
-            for (RegionModel region : regiones) {
-                if (region.getIdRegion()> id) {
-                    id = region.getIdRegion();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-        regiones.add(new RegionModel(id, nuevaRegion.getNombreRegion(), nuevaRegion.getDetalle()));
-         
-        return true;
-    }
-    
-    public RegionModel buscaRegion(int idRegionBuscada){
-    
-        RegionModel regionEncontrada = null;
-        
-        if(!regiones.isEmpty()){
-            for (RegionModel region : regiones) {
-                if (region.getIdRegion()== idRegionBuscada) {
-                    regionEncontrada = region;
-                }
-            }
-        }
-        
-        return regionEncontrada;
-        
-    }
-    
-    public RegionModel editarRegion(int idRegion, RegionModel regionEditar){
-    
-        RegionModel regionEditada = null;
-        
-        if(!regiones.isEmpty()){
-            for (RegionModel region : regiones) {
-                if (region.getIdRegion()== idRegion) {
-                    region.setNombreRegion(regionEditar.getNombreRegion());
-                    region.setDetalle(regionEditar.getDetalle());
-                    
-                    regionEditada = region;
-                }
-            }
-        }
-        
-        return regionEditada;
-        
-    }
-    
-    public boolean eliminarRegion(int id){
-        RegionModel regionEliminada = null;
-        
-        if(!regiones.isEmpty()){
-            for (RegionModel region : regiones) {
-                if (region.getIdRegion()== id) {
-                   regionEliminada = region;
-                }
-            }
-        }
-        
-        regiones.remove(regionEliminada);
-        
-        
-        return true;
     }
     
 }

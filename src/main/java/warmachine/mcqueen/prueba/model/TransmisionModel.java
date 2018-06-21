@@ -1,15 +1,20 @@
 
 package warmachine.mcqueen.prueba.model;
 
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="transmision")
 public class TransmisionModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTransmision;
     private String nombreTransmision;
     private String detalle;
-    
-    public static ArrayList<TransmisionModel> transmisiones = new ArrayList<>();
 
     public int getIdTransmision() {
         return idTransmision;
@@ -47,79 +52,6 @@ public class TransmisionModel {
         this.idTransmision = idTransmision;
         this.nombreTransmision = nombreTransmision;
         this.detalle = detalle;
-    }
-    
-    public boolean nuevaTransmision(TransmisionModel nuevaTransmision){
-    
-        int id = 0;
-        
-        if (!transmisiones.isEmpty()) {
-            
-            for (TransmisionModel transmision : transmisiones) {
-                if (transmision.getIdTransmision()> id) {
-                    id = transmision.getIdTransmision();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-        transmisiones.add(new TransmisionModel(id, nuevaTransmision.getNombreTransmision(), nuevaTransmision.getDetalle()));
-         
-        return true;
-    }
-    
-    public TransmisionModel buscaTransmision(int idTransmisionBuscada){
-    
-        TransmisionModel transmisionEncontrada = null;
-        
-        if(!transmisiones.isEmpty()){
-            for (TransmisionModel transmision : transmisiones) {
-                if (transmision.getIdTransmision()== idTransmisionBuscada) {
-                    transmisionEncontrada = transmision;
-                }
-            }
-        }
-        
-        return transmisionEncontrada;
-        
-    }
-    
-    public TransmisionModel editarTransmision(int idTransmision, TransmisionModel transmisionEditar){
-    
-        TransmisionModel transmisionEditada = null;
-        
-        if(!transmisiones.isEmpty()){
-            for (TransmisionModel transmision : transmisiones) {
-                if (transmision.getIdTransmision()== idTransmision) {
-                    transmision.setNombreTransmision(transmisionEditar.getNombreTransmision());
-                    transmision.setDetalle(transmisionEditar.getDetalle());
-                    
-                    transmisionEditada = transmision;
-                }
-            }
-        }
-        
-        return transmisionEditada;
-        
-    }
-    
-    public boolean eliminarTransmision(int id){
-        TransmisionModel transmisionEliminada = null;
-        
-        if(!transmisiones.isEmpty()){
-            for (TransmisionModel transmision : transmisiones) {
-                if (transmision.getIdTransmision()== id) {
-                   transmisionEliminada = transmision;
-                }
-            }
-        }
-        
-        transmisiones.remove(transmisionEliminada);
-        
-        
-        return true;
     }
     
 }

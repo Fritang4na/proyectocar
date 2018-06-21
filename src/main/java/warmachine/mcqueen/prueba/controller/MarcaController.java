@@ -8,6 +8,8 @@ package warmachine.mcqueen.prueba.controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import warmachine.mcqueen.prueba.model.MarcaModel;
+import warmachine.mcqueen.prueba.repository.MarcaRepository;
 
 /**
  *
@@ -26,49 +29,77 @@ import warmachine.mcqueen.prueba.model.MarcaModel;
 @RequestMapping("/marca")
 public class MarcaController {
     
+    @Autowired
+    private MarcaRepository marcaRepository;
+    
     @GetMapping()
-    public List<MarcaModel> list() {
-        return MarcaModel.marcas;
+    public Iterable<MarcaModel> list() {
+        return marcaRepository.findAll();
     }
     
     @GetMapping("/{id}")
-    public MarcaModel get(@PathVariable String id) {
-        MarcaModel marca = new MarcaModel();
-        
-        return marca.buscaMarca(Integer.parseInt(id));
+    public ResponseEntity<MarcaModel> get(@PathVariable String id) {
+        Optional<MarcaModel> mOptional = marcaRepository.findById(Integer.parseInt(id));
+        if(mOptional.isPresent()){
+            MarcaModel mEncontrado = mOptional.get();
+            
+            return new ResponseEntity<>(mEncontrado, HttpStatus.FOUND);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<MarcaModel> put(@PathVariable String id, @RequestBody MarcaModel marcaEditar) {
-        MarcaModel marca = new MarcaModel();
         
-        
-        
-        return new ResponseEntity<>(marca.editarMarca(Integer.parseInt(id), marcaEditar), HttpStatus.OK);
+        Optional<MarcaModel> mOptional = marcaRepository.findById(Integer.parseInt(id));
+        if(mOptional.isPresent()){
+            MarcaModel mEncontrado = mOptional.get();
+            marcaEditar.setIdMarca(mEncontrado.getIdMarca());
+            marcaRepository.save(marcaEditar);
+            return new ResponseEntity<>(marcaEditar, HttpStatus.OK);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody MarcaModel nuevaMarca) {
-        MarcaModel marca = new MarcaModel();
         
-        if (marca.nuevaMarca(nuevaMarca)) {
+        nuevaMarca = marcaRepository.save(nuevaMarca);
+        
+        Optional<MarcaModel> mOptional = marcaRepository.findById(nuevaMarca.getIdMarca());
+        if(mOptional.isPresent()){
+            MarcaModel mEncontrado = mOptional.get();
             
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(mEncontrado, HttpStatus.CREATED);
             
         }else{
             
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+            
         }
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        MarcaModel marca = new MarcaModel();
         
-        if (marca.eliminarMarca(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Optional<MarcaModel> mOptional = marcaRepository.findById(Integer.parseInt(id));
+        if(mOptional.isPresent()){
+            MarcaModel mEncontrado = mOptional.get();
+            marcaRepository.deleteById(mEncontrado.getIdMarca());
+            return new ResponseEntity<>(mEncontrado, HttpStatus.OK);
+            
         }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
         }
     }
     

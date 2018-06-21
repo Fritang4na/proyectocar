@@ -1,15 +1,20 @@
 
 package warmachine.mcqueen.prueba.model;
 
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="medio_pago")
 public class MedioPagoModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idMedioPago;
     private String nombreMedioPago;
     private String detalle;
-    
-    public static ArrayList<MedioPagoModel> medios = new ArrayList<>();
 
     public int getIdMedioPago() {
         return idMedioPago;
@@ -47,79 +52,6 @@ public class MedioPagoModel {
         this.idMedioPago = idMedioPago;
         this.nombreMedioPago = nombreMedioPago;
         this.detalle = detalle;
-    }
-    
-    public boolean nuevoMedio(MedioPagoModel nuevoMedio){
-    
-        int id = 0;
-        
-        if (!medios.isEmpty()) {
-            
-            for (MedioPagoModel medio : medios) {
-                if (medio.getIdMedioPago()> id) {
-                    id = medio.getIdMedioPago();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-        medios.add(new MedioPagoModel(id, nuevoMedio.getNombreMedioPago(), nuevoMedio.getDetalle()));
-         
-        return true;
-    }
-    
-    public MedioPagoModel buscaMedio(int idMedioBuscado){
-    
-        MedioPagoModel medioEncontrado = null;
-        
-        if(!medios.isEmpty()){
-            for (MedioPagoModel medio : medios) {
-                if (medio.getIdMedioPago()== idMedioBuscado) {
-                    medioEncontrado = medio;
-                }
-            }
-        }
-        
-        return medioEncontrado;
-        
-    }
-    
-    public MedioPagoModel editarMedio(int idMedio, MedioPagoModel medioEditar){
-    
-        MedioPagoModel medioEditado = null;
-        
-        if(!medios.isEmpty()){
-            for (MedioPagoModel medio : medios) {
-                if (medio.getIdMedioPago()== idMedio) {
-                    medio.setNombreMedioPago(medioEditar.getNombreMedioPago());
-                    medio.setDetalle(medioEditar.getDetalle());
-                    
-                    medioEditado = medio;
-                }
-            }
-        }
-        
-        return medioEditado;
-        
-    }
-    
-    public boolean eliminarMedio(int id){
-        MedioPagoModel medioEliminado = null;
-        
-        if(!medios.isEmpty()){
-            for (MedioPagoModel medio : medios) {
-                if (medio.getIdMedioPago()== id) {
-                   medioEliminado = medio;
-                }
-            }
-        }
-        
-        medios.remove(medioEliminado);
-        
-        
-        return true;
     }
     
 }

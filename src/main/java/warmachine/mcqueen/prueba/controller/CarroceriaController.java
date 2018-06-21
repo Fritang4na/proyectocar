@@ -8,6 +8,8 @@ package warmachine.mcqueen.prueba.controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import warmachine.mcqueen.prueba.model.CarroceriaModel;
+import warmachine.mcqueen.prueba.repository.CarroceriaRepository;
 
 /**
  *
@@ -26,49 +29,78 @@ import warmachine.mcqueen.prueba.model.CarroceriaModel;
 @RequestMapping("/carroceria")
 public class CarroceriaController {
     
+    @Autowired
+    private CarroceriaRepository carroceriaRepository;
+    
     @GetMapping()
-    public List<CarroceriaModel> list() {
-        return CarroceriaModel.carrocerias;
+    public Iterable<CarroceriaModel> list() {
+        return carroceriaRepository.findAll();
     }
     
     @GetMapping("/{id}")
-    public CarroceriaModel get(@PathVariable String id) {
-        CarroceriaModel carroceria = new CarroceriaModel();
-        
-        return carroceria.buscaCarroceria(Integer.parseInt(id));
+    public ResponseEntity<CarroceriaModel> get(@PathVariable String id) {
+        Optional<CarroceriaModel> caOptional = carroceriaRepository.findById(Integer.parseInt(id));
+        if(caOptional.isPresent()){
+            CarroceriaModel cEncontrado = caOptional.get();
+            
+            return new ResponseEntity<>(cEncontrado, HttpStatus.FOUND);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<CarroceriaModel> put(@PathVariable String id, @RequestBody CarroceriaModel carroceriaEditar) {
-        CarroceriaModel carroceria = new CarroceriaModel();
         
+        Optional<CarroceriaModel> caOptional = carroceriaRepository.findById(Integer.parseInt(id));
+        if(caOptional.isPresent()){
+            CarroceriaModel caEncontrado = caOptional.get();
+            carroceriaEditar.setIdCarroceria(caEncontrado.getIdCarroceria());
+            carroceriaRepository.save(carroceriaEditar);
+            return new ResponseEntity<>(carroceriaEditar, HttpStatus.OK);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
         
-        
-        return new ResponseEntity<>(carroceria.editarCarroceria(Integer.parseInt(id), carroceriaEditar), HttpStatus.OK);
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody CarroceriaModel nuevaCarroceria) {
-        CarroceriaModel carroceria = new CarroceriaModel();
         
-        if (carroceria.nuevaCarroceria(nuevaCarroceria)) {
+        nuevaCarroceria = carroceriaRepository.save(nuevaCarroceria);
+        
+        Optional<CarroceriaModel> caOptional = carroceriaRepository.findById(nuevaCarroceria.getIdCarroceria());
+        if(caOptional.isPresent()){
+            CarroceriaModel caEncontrado = caOptional.get();
             
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(caEncontrado, HttpStatus.CREATED);
             
         }else{
             
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+            
         }
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        CarroceriaModel carroceria = new CarroceriaModel();
         
-        if (carroceria.eliminarCarroceria(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Optional<CarroceriaModel> caOptional = carroceriaRepository.findById(Integer.parseInt(id));
+        if(caOptional.isPresent()){
+            CarroceriaModel caEncontrado = caOptional.get();
+            carroceriaRepository.deleteById(caEncontrado.getIdCarroceria());
+            return new ResponseEntity<>(caEncontrado, HttpStatus.OK);
+            
         }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
         }
     }
     
