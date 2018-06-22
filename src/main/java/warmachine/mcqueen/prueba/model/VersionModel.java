@@ -2,9 +2,18 @@
 package warmachine.mcqueen.prueba.model;
 
 import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+
+@Entity
+@Table(name="version")
 public class VersionModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVersion;
     private String nombre;
     private String detalle;
@@ -23,8 +32,6 @@ public class VersionModel {
     private TransmisionModel transmision;
     private TraccionModel traccion;
     private ModeloModel modelo;
-
-    public static ArrayList<VersionModel> versiones = new ArrayList<>();
     
     public int getIdVersion() {
         return idVersion;
@@ -213,94 +220,5 @@ public class VersionModel {
         this.traccion = traccion;
         this.modelo = modelo;
     }
-    
-    public boolean nuevaVersion(VersionModel nuevaVersion){
-    
-        int id = 0;
-        
-        if (!versiones.isEmpty()) {
-            
-            for (VersionModel version : versiones) {
-                if (version.getIdVersion()> id) {
-                    id = version.getIdVersion();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-        versiones.add(new VersionModel(id, nuevaVersion.getNombre(), nuevaVersion.getDetalle(), nuevaVersion.getPuertas(), nuevaVersion.getPasajeros(), nuevaVersion.getCilindrada(), nuevaVersion.getRendimiento(), nuevaVersion.getCapacidadMaletero(), nuevaVersion.getAirbags(), nuevaVersion.isAireAcondicionado(), nuevaVersion.isCierreCentralizado(), nuevaVersion.isAlzaVidriosElectrico(), nuevaVersion.isCamaraRetroceso(), nuevaVersion.getCombustible(), nuevaVersion.getCarroceria(), nuevaVersion.getTransmision(), nuevaVersion.getTraccion(), nuevaVersion.getModelo()));
-         
-        return true;
-    }
-    
-    public VersionModel buscaVersion(int idVersionBuscada){
-    
-        VersionModel versionEncontrada = null;
-        
-        if(!versiones.isEmpty()){
-            for (VersionModel version : versiones) {
-                if (version.getIdVersion()== idVersionBuscada) {
-                    versionEncontrada = version;
-                }
-            }
-        }
-        
-        return versionEncontrada;
-        
-    }
-    
-    public VersionModel editarVersion(int idVersion, VersionModel versionEditar){
-    
-        VersionModel versionEditada = null;
-        
-        if(!versiones.isEmpty()){
-            for (VersionModel version : versiones) {
-                if (version.getIdVersion()== idVersion) {
-                    version.setNombre(versionEditar.getNombre());
-                    version.setDetalle(versionEditar.getDetalle());
-                    version.setPuertas(versionEditar.getPuertas());
-                    version.setPasajeros(versionEditar.getPasajeros());
-                    version.setCilindrada(versionEditar.getCilindrada());
-                    version.setRendimiento(versionEditar.getRendimiento());
-                    version.setCapacidadMaletero(versionEditar.getCapacidadMaletero());
-                    version.setAirbags(versionEditar.getAirbags());
-                    version.setAireAcondicionado(versionEditar.isAireAcondicionado());
-                    version.setCierreCentralizado(versionEditar.isCierreCentralizado());
-                    version.setAlzaVidriosElectrico(versionEditar.isAlzaVidriosElectrico());
-                    version.setCamaraRetroceso(versionEditar.isCamaraRetroceso());
-                    version.setCombustible(versionEditar.getCombustible());
-                    version.setCarroceria(versionEditar.getCarroceria());
-                    version.setTransmision(versionEditar.getTransmision());
-                    version.setTraccion(versionEditar.getTraccion());
-                    version.setModelo(versionEditar.getModelo());
-                    
-                    versionEditada = version;
-                }
-            }
-        }
-        
-        return versionEditada;
-        
-    }
-    
-    public boolean eliminarVersion(int id){
-        VersionModel versionEliminada = null;
-        
-        if(!versiones.isEmpty()){
-            for (VersionModel version : versiones) {
-                if (version.getIdVersion()== id) {
-                   versionEliminada = version;
-                }
-            }
-        }
-        
-        versiones.remove(versionEliminada);
-        
-        
-        return true;
-    }
-    
     
 }

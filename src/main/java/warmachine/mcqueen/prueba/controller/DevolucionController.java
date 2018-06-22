@@ -8,6 +8,8 @@ package warmachine.mcqueen.prueba.controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import warmachine.mcqueen.prueba.model.ArriendoModel;
 import warmachine.mcqueen.prueba.model.DevolucionModel;
+import warmachine.mcqueen.prueba.repository.DevolucionRepository;
 
 /**
  *
@@ -27,53 +30,74 @@ import warmachine.mcqueen.prueba.model.DevolucionModel;
 @RequestMapping("/devolucion")
 public class DevolucionController {
     
+    @Autowired
+    private DevolucionRepository devolucionRepository;
+    
     @GetMapping()
-    public List<DevolucionModel> list() {
-        return DevolucionModel.devoluciones;
+    public Iterable<DevolucionModel> list() {
+        return devolucionRepository.findAll();
     }
     
     @GetMapping("/{id}")
-    public DevolucionModel get(@PathVariable String id) {
-        DevolucionModel devolucion = new DevolucionModel();
-        
-        return devolucion.buscaDevolucion(Integer.parseInt(id));
+    public ResponseEntity<DevolucionModel> get(@PathVariable String id) {
+        Optional<DevolucionModel> dOptional = devolucionRepository.findById(Integer.parseInt(id));
+        if(dOptional.isPresent()){
+            DevolucionModel dEncontrado = dOptional.get();
+            
+            return new ResponseEntity<>(dEncontrado, HttpStatus.FOUND);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<DevolucionModel> put(@PathVariable String id, @RequestBody DevolucionModel devolucionEditar) {
-        DevolucionModel devolucion = new DevolucionModel();
-        
-        
-        
-        return new ResponseEntity<>(devolucion.editarDevolucion(Integer.parseInt(id), devolucionEditar), HttpStatus.OK);
+        Optional<DevolucionModel> dOptional = devolucionRepository.findById(Integer.parseInt(id));
+        if(dOptional.isPresent()){
+            DevolucionModel dEncontrado = dOptional.get();
+            devolucionEditar.setIdDevolucion(dEncontrado.getIdDevolucion());
+            devolucionRepository.save(devolucionEditar);
+            return new ResponseEntity<>(devolucionEditar, HttpStatus.OK);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody DevolucionModel nuevaDevolucion) {
-        DevolucionModel devolucion = new DevolucionModel();
+        nuevaDevolucion = devolucionRepository.save(nuevaDevolucion);
         
-        ArriendoModel a = new ArriendoModel();
-        
-        nuevaDevolucion.setArriendo(a.buscaArriendo(nuevaDevolucion.getArriendo().getIdArriendo()));
-        
-        if (devolucion.nuevaDevolucion(nuevaDevolucion)) {
+        Optional<DevolucionModel> dOptional = devolucionRepository.findById(nuevaDevolucion.getIdDevolucion());
+        if(dOptional.isPresent()){
+            DevolucionModel dEncontrado = dOptional.get();
             
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(dEncontrado, HttpStatus.CREATED);
             
         }else{
             
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+            
         }
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        DevolucionModel devolucion = new DevolucionModel();
-        
-        if (devolucion.eliminarDevolucion(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Optional<DevolucionModel> dOptional = devolucionRepository.findById(Integer.parseInt(id));
+        if(dOptional.isPresent()){
+            DevolucionModel dEncontrado = dOptional.get();
+            devolucionRepository.deleteById(dEncontrado.getIdDevolucion());
+            return new ResponseEntity<>(dEncontrado, HttpStatus.OK);
+            
         }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
         }
     }
     

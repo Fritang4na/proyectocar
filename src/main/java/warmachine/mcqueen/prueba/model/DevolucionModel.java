@@ -4,15 +4,21 @@ package warmachine.mcqueen.prueba.model;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="devolucion")
 public class DevolucionModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDevolucion;
     private Date fechaDevolucion;
     private Time horaDevolucion;
     private ArriendoModel arriendo;
-    
-    public static ArrayList<DevolucionModel> devoluciones = new ArrayList<>();
 
     public int getIdDevolucion() {
         return idDevolucion;
@@ -60,80 +66,6 @@ public class DevolucionModel {
         this.fechaDevolucion = fechaDevolucion;
         this.horaDevolucion = horaDevolucion;
         this.arriendo = arriendo;
-    }
-    
-    public boolean nuevaDevolucion(DevolucionModel nuevaDevolucion){
-    
-        int id = 0;
-        
-        if (!devoluciones.isEmpty()) {
-            
-            for (DevolucionModel devolucion : devoluciones) {
-                if (devolucion.getIdDevolucion()> id) {
-                    id = devolucion.getIdDevolucion();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-       devoluciones.add(new DevolucionModel(id, nuevaDevolucion.getFechaDevolucion(), nuevaDevolucion.getHoraDevolucion(), nuevaDevolucion.getArriendo()));
-         
-        return true;
-    }
-    
-    public DevolucionModel buscaDevolucion(int idDevolucionBuscada){
-    
-        DevolucionModel devolucionEncontrada = null;
-        
-        if(!devoluciones.isEmpty()){
-            for (DevolucionModel devolucion : devoluciones) {
-                if (devolucion.getIdDevolucion()== idDevolucionBuscada) {
-                    devolucionEncontrada = devolucion;
-                }
-            }
-        }
-        
-        return devolucionEncontrada;
-        
-    }
-    
-    public DevolucionModel editarDevolucion(int idDevolucion, DevolucionModel devolucionEditar){
-    
-        DevolucionModel devolucionEditada = null;
-        
-        if(!devoluciones.isEmpty()){
-            for (DevolucionModel devolucion : devoluciones) {
-                if (devolucion.getIdDevolucion()== idDevolucion) {
-                    devolucion.setFechaDevolucion(devolucionEditar.getFechaDevolucion());
-                    devolucion.setHoraDevolucion(devolucionEditar.getHoraDevolucion());
-                    devolucion.setArriendo(devolucionEditar.getArriendo());
-                    
-                    devolucionEditada = devolucion;
-                }
-            }
-        }
-        
-        return devolucionEditada;
-        
-    }
-    
-    public boolean eliminarDevolucion(int id){
-        DevolucionModel devolucionEliminada = null;
-        
-        if(!devoluciones.isEmpty()){
-            for (DevolucionModel devolucion : devoluciones) {
-                if (devolucion.getIdDevolucion()== id) {
-                   devolucionEliminada = devolucion;
-                }
-            }
-        }
-        
-        devoluciones.remove(devolucionEliminada);
-        
-        
-        return true;
     }
     
 }

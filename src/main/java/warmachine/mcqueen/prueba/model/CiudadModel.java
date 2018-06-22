@@ -2,15 +2,22 @@
 package warmachine.mcqueen.prueba.model;
 
 import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+
+@Entity
+@Table(name="ciudad")
 public class CiudadModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCiudad;
     private String nombreCiudad;
     private String detalle;
     private RegionModel region;
-    
-    public static ArrayList<CiudadModel> ciudades = new ArrayList<>();
 
     public int getIdCiudad() {
         return idCiudad;
@@ -59,80 +66,5 @@ public class CiudadModel {
         this.detalle = detalle;
         this.region = region;
     }
-    
-    public boolean nuevaCiudad(CiudadModel nuevaCiudad){
-    
-        int id = 0;
-        
-        if (!ciudades.isEmpty()) {
-            
-            for (CiudadModel ciudad : ciudades) {
-                if (ciudad.getIdCiudad()> id) {
-                    id = ciudad.getIdCiudad();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-        ciudades.add(new CiudadModel(id, nuevaCiudad.getNombreCiudad(), nuevaCiudad.getDetalle(), nuevaCiudad.getRegion()));
-         
-        return true;
-    }
-    
-    public CiudadModel buscaCiudad(int idCiudadBuscada){
-    
-        CiudadModel ciudadEncontrada = null;
-        
-        if(!ciudades.isEmpty()){
-            for (CiudadModel ciudad : ciudades) {
-                if (ciudad.getIdCiudad()== idCiudadBuscada) {
-                    ciudadEncontrada = ciudad;
-                }
-            }
-        }
-        
-        return ciudadEncontrada;
-        
-    }
-    
-    public CiudadModel editarCiudad(int idCiudad, CiudadModel ciudadEditar){
-    
-        CiudadModel ciudadEditada = null;
-        
-        if(!ciudades.isEmpty()){
-            for (CiudadModel ciudad : ciudades) {
-                if (ciudad.getIdCiudad()== idCiudad) {
-                    ciudad.setNombreCiudad(ciudadEditar.getNombreCiudad());
-                    ciudad.setDetalle(ciudadEditar.getDetalle());
-                    ciudad.setRegion(ciudadEditar.getRegion());
-                    
-                    ciudadEditada = ciudad;
-                }
-            }
-        }
-        
-        return ciudadEditada;
-        
-    }
-    
-    public boolean eliminarCiudad(int id){
-        CiudadModel ciudadEliminada = null;
-        
-        if(!ciudades.isEmpty()){
-            for (CiudadModel ciudad : ciudades) {
-                if (ciudad.getIdCiudad()== id) {
-                   ciudadEliminada = ciudad;
-                }
-            }
-        }
-        
-        ciudades.remove(ciudadEliminada);
-        
-        
-        return true;
-    }
-    
     
 }

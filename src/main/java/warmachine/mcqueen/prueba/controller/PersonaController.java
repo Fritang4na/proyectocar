@@ -8,6 +8,8 @@ package warmachine.mcqueen.prueba.controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import warmachine.mcqueen.prueba.model.CiudadModel;
 import warmachine.mcqueen.prueba.model.PersonaModel;
 import warmachine.mcqueen.prueba.model.TipoPersonaModel;
+import warmachine.mcqueen.prueba.repository.PersonaRepository;
 
 /**
  *
@@ -28,57 +31,74 @@ import warmachine.mcqueen.prueba.model.TipoPersonaModel;
 @RequestMapping("/persona")
 public class PersonaController {
     
+    @Autowired
+    private PersonaRepository personaRepository;
+    
     @GetMapping()
-    public List<PersonaModel> list() {
-        return PersonaModel.personas;
+    public Iterable<PersonaModel> list() {
+        return personaRepository.findAll();
     }
     
     @GetMapping("/{id}")
-    public PersonaModel get(@PathVariable String id) {
-        PersonaModel persona = new PersonaModel();
-        
-        return persona.buscaPersona(Integer.parseInt(id));
+    public ResponseEntity<PersonaModel> get(@PathVariable String id) {
+        Optional<PersonaModel> pOptional = personaRepository.findById(Integer.parseInt(id));
+        if(pOptional.isPresent()){
+            PersonaModel pEncontrado = pOptional.get();
+            
+            return new ResponseEntity<>(pEncontrado, HttpStatus.FOUND);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<PersonaModel> put(@PathVariable String id, @RequestBody PersonaModel personaEditar) {
-        PersonaModel persona = new PersonaModel();
-        
-        
-        
-        return new ResponseEntity<>(persona.editarPersona(Integer.parseInt(id), personaEditar), HttpStatus.OK);
+        Optional<PersonaModel> pOptional = personaRepository.findById(Integer.parseInt(id));
+        if(pOptional.isPresent()){
+            PersonaModel pEncontrado = pOptional.get();
+            personaEditar.setIdPersona(pEncontrado.getIdPersona());
+            personaRepository.save(personaEditar);
+            return new ResponseEntity<>(personaEditar, HttpStatus.OK);
+            
+        }else{
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
+        }
     }
     
     @PostMapping
     public ResponseEntity<?> post(@RequestBody PersonaModel nuevaPersona) {
-        PersonaModel persona = new PersonaModel();
+        nuevaPersona = personaRepository.save(nuevaPersona);
         
-        CiudadModel c = new CiudadModel();
-        
-        nuevaPersona.setCiudad(c.buscaCiudad(nuevaPersona.getCiudad().getIdCiudad()));
-        
-        TipoPersonaModel t = new TipoPersonaModel();
-        
-        nuevaPersona.setTipoPersona(t.buscaTipoP(nuevaPersona.getTipoPersona().getIdTipoPersona()));
-        
-        if (persona.nuevaPersona(nuevaPersona)) {
+        Optional<PersonaModel> pOptional = personaRepository.findById(nuevaPersona.getIdPersona());
+        if(pOptional.isPresent()){
+            PersonaModel pEncontrado = pOptional.get();
             
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(pEncontrado, HttpStatus.CREATED);
             
         }else{
             
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+            
         }
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        PersonaModel persona = new PersonaModel();
-        
-        if (persona.eliminarPersona(Integer.parseInt(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Optional<PersonaModel> pOptional = personaRepository.findById(Integer.parseInt(id));
+        if(pOptional.isPresent()){
+            PersonaModel pEncontrado = pOptional.get();
+            personaRepository.deleteById(pEncontrado.getIdPersona());
+            return new ResponseEntity<>(pEncontrado, HttpStatus.OK);
+            
         }else{
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            
         }
     }
     

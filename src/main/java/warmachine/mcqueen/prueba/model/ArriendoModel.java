@@ -4,9 +4,17 @@ package warmachine.mcqueen.prueba.model;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="arriendo")
 public class ArriendoModel {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idArriendo;
     private Date fechaArriendo;
     private Time horaArriendo;
@@ -14,8 +22,6 @@ public class ArriendoModel {
     private PersonaModel cliente;
     private VehiculoModel vehiculo;
     private MedioPagoModel medioPago;
-    
-    public static ArrayList<ArriendoModel> arriendos = new ArrayList<>();
 
     public int getIdArriendo() {
         return idArriendo;
@@ -93,83 +99,6 @@ public class ArriendoModel {
         this.cliente = cliente;
         this.vehiculo = vehiculo;
         this.medioPago = medioPago;
-    }
-    
-    public boolean nuevoArriendo(ArriendoModel nuevoArriendo){
-    
-        int id = 0;
-        
-        if (!arriendos.isEmpty()) {
-            
-            for (ArriendoModel arriendo : arriendos) {
-                if (arriendo.getIdArriendo()> id) {
-                    id = arriendo.getIdArriendo();
-                }
-            }
-            
-        }
-        
-        id++;
-        
-       arriendos.add(new ArriendoModel(id, nuevoArriendo.getFechaArriendo(), nuevoArriendo.getHoraArriendo(), nuevoArriendo.getVendedor(), nuevoArriendo.getCliente(), nuevoArriendo.getVehiculo(), nuevoArriendo.getMedioPago()));
-         
-        return true;
-    }
-    
-    public ArriendoModel buscaArriendo(int idArriendoBuscado){
-    
-        ArriendoModel arriendoEncontrado = null;
-        
-        if(!arriendos.isEmpty()){
-            for (ArriendoModel arriendo : arriendos) {
-                if (arriendo.getIdArriendo()== idArriendoBuscado) {
-                    arriendoEncontrado = arriendo;
-                }
-            }
-        }
-        
-        return arriendoEncontrado;
-        
-    }
-    
-    public ArriendoModel editarArriendo(int idArriendo, ArriendoModel arriendoEditar){
-    
-        ArriendoModel arriendoEditado = null;
-        
-        if(!arriendos.isEmpty()){
-            for (ArriendoModel arriendo : arriendos) {
-                if (arriendo.getIdArriendo()== idArriendo) {
-                    arriendo.setFechaArriendo(arriendoEditar.getFechaArriendo());
-                    arriendo.setHoraArriendo(arriendoEditar.getHoraArriendo());
-                    arriendo.setVendedor(arriendoEditar.getVendedor());
-                    arriendo.setCliente(arriendoEditar.getCliente());
-                    arriendo.setVehiculo(arriendoEditar.getVehiculo());
-                    arriendo.setMedioPago(arriendoEditar.getMedioPago());
-                    
-                    arriendoEditado = arriendo;
-                }
-            }
-        }
-        
-        return arriendoEditado;
-        
-    }
-    
-    public boolean eliminarArriendo(int id){
-        ArriendoModel arriendoEliminado = null;
-        
-        if(!arriendos.isEmpty()){
-            for (ArriendoModel arriendo : arriendos) {
-                if (arriendo.getIdArriendo()== id) {
-                   arriendoEliminado = arriendo;
-                }
-            }
-        }
-        
-        arriendos.remove(arriendoEliminado);
-        
-        
-        return true;
     }
     
 }

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="combustible")
+@Table(name="modelo")
 public class ModeloModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +17,6 @@ public class ModeloModel {
     private String nombreModelo;
     private String detalle;
     private MarcaModel marca;
-
-    public static ArrayList<ModeloModel> modelos = new ArrayList<>();
     
     public int getIdModelo() {
         return idModelo;
