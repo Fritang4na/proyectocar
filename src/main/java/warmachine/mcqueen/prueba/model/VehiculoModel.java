@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +20,11 @@ public class VehiculoModel {
     private int valor;
     private int ano;
     private String color;
+    @ManyToOne
+    @JoinColumn(name="id_tipo_vehiculo")
     private TipoVehiculoModel tipoVehiculo;
+    @ManyToOne
+    @JoinColumn(name="id_version")
     private VersionModel version;
 
     public int getIdVehiculo() {

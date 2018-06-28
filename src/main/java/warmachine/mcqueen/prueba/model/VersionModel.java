@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -27,10 +29,20 @@ public class VersionModel {
     private boolean cierreCentralizado;
     private boolean alzaVidriosElectrico;
     private boolean camaraRetroceso;
+    @ManyToOne
+    @JoinColumn(name="id_combustible")
     private CombustibleModel combustible;
+    @ManyToOne
+    @JoinColumn(name="id_carroceria")
     private CarroceriaModel carroceria;
+    @ManyToOne
+    @JoinColumn(name="id_transmision")
     private TransmisionModel transmision;
+    @ManyToOne
+    @JoinColumn(name="id_traccion")
     private TraccionModel traccion;
+    @ManyToOne
+    @JoinColumn(name="id_modelo")
     private ModeloModel modelo;
     
     public int getIdVersion() {

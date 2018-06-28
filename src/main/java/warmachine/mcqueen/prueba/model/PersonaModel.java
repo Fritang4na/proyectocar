@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +24,11 @@ public class PersonaModel {
     private String telefono;
     private String direccion1;
     private String direccion2;
+    @ManyToOne
+    @JoinColumn(name="id_ciudad")
     private CiudadModel ciudad;
+    @ManyToOne
+    @JoinColumn(name="id_tipo_persona")
     private TipoPersonaModel tipoPersona;
     
     public int getIdPersona() {

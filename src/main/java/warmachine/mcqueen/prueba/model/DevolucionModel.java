@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,7 +19,9 @@ public class DevolucionModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDevolucion;
     private Date fechaDevolucion;
-    private Time horaDevolucion;
+    private Date horaDevolucion;
+    @ManyToOne
+    @JoinColumn(name="id_arriendo")
     private ArriendoModel arriendo;
 
     public int getIdDevolucion() {
@@ -36,7 +40,7 @@ public class DevolucionModel {
         this.fechaDevolucion = fechaDevolucion;
     }
 
-    public Time getHoraDevolucion() {
+    public Date getHoraDevolucion() {
         return horaDevolucion;
     }
 
@@ -55,13 +59,13 @@ public class DevolucionModel {
     public DevolucionModel() {
     }
 
-    public DevolucionModel(Date fechaDevolucion, Time horaDevolucion, ArriendoModel arriendo) {
+    public DevolucionModel(Date fechaDevolucion, Date horaDevolucion, ArriendoModel arriendo) {
         this.fechaDevolucion = fechaDevolucion;
         this.horaDevolucion = horaDevolucion;
         this.arriendo = arriendo;
     }
 
-    private DevolucionModel(int idDevolucion, Date fechaDevolucion, Time horaDevolucion, ArriendoModel arriendo) {
+    private DevolucionModel(int idDevolucion, Date fechaDevolucion, Date horaDevolucion, ArriendoModel arriendo) {
         this.idDevolucion = idDevolucion;
         this.fechaDevolucion = fechaDevolucion;
         this.horaDevolucion = horaDevolucion;

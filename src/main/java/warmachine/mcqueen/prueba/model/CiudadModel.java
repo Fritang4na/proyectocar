@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -17,6 +19,8 @@ public class CiudadModel {
     private int idCiudad;
     private String nombreCiudad;
     private String detalle;
+    @ManyToOne
+    @JoinColumn(name="id_region")
     private RegionModel region;
 
     public int getIdCiudad() {
