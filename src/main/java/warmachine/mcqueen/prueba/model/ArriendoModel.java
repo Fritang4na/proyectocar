@@ -21,10 +21,10 @@ public class ArriendoModel {
     private Date fechaArriendo;
     private Date horaArriendo;
     @ManyToOne
-    @JoinColumn(name="id_persona")
+    @JoinColumn(name="id_vendedor")
     private PersonaModel vendedor;
     @ManyToOne
-    @JoinColumn(name="id_persona")
+    @JoinColumn(name="id_cliente")
     private PersonaModel cliente;
     @ManyToOne
     @JoinColumn(name="id_vehiculo")
